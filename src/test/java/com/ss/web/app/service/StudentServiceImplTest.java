@@ -64,4 +64,31 @@ class StudentServiceImplTest {
 
     assertFalse(actualResult);
   }
+
+  @Test
+  public void edit_ExistentUser_Success() {
+    StudentRepo repo = mock(StudentRepo.class);
+    StudentServiceImpl studentServiceImpl = new StudentServiceImpl(repo);
+
+    Student student = new Student(3L, "Curl", "Test");
+    when(repo.edit(student)).thenReturn(student);
+
+    Student updatedStudent = studentServiceImpl.edit(student);
+
+    assertNotNull(updatedStudent);
+    assertEquals(student, updatedStudent);
+  }
+
+  @Test
+  public void edit_NonExistentUser_Null() {
+    StudentRepo repo = mock(StudentRepo.class);
+    StudentServiceImpl studentServiceImpl = new StudentServiceImpl(repo);
+
+    Student student = new Student(100L, "John", "Doe");
+    when(repo.edit(student)).thenReturn(null);
+
+    Student updatedStudent = studentServiceImpl.edit(student);
+
+    assertNull(updatedStudent);
+  }
 }
